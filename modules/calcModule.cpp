@@ -397,16 +397,27 @@ void random_graph_fixed_degree_distribution()
         tmp = list_repeated_nodes_top[m - 1];
         list_repeated_nodes_top[m - 1] = list_repeated_nodes_top[u];
         list_repeated_nodes_top[u] = tmp;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
         // swap  values of bot
         tmp = list_repeated_nodes_bot[m - 1];
         list_repeated_nodes_bot[m - 1] = list_repeated_nodes_bot[v];
         list_repeated_nodes_bot[v] = tmp;
 
+<<<<<<< HEAD
         m--;
     }
 
     m = graph.m / 2;
+=======
+        m--;        
+    }    
+
+    m = graph.m / 2;    
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     unsigned new_m = 0;
     unsigned duplicated = 0;
     bool exist;
@@ -424,12 +435,20 @@ void random_graph_fixed_degree_distribution()
         }
 
         if(!exist)
+<<<<<<< HEAD
         {
+=======
+        {            
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
             nodes[list_repeated_nodes_top[i]].p_neighbors = PyMem_Resize(nodes[list_repeated_nodes_top[i]].p_neighbors, unsigned int, nodes[list_repeated_nodes_top[i]].degree + 1);
             nodes[list_repeated_nodes_top[i]].p_neighbors[nodes[list_repeated_nodes_top[i]].degree] = graph.nodes[list_repeated_nodes_bot[i]];
             nodes[list_repeated_nodes_top[i]].degree++;
             new_m++;
         }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     }
 
     for(int i=0; i<m; i++)
@@ -451,6 +470,10 @@ void random_graph_fixed_degree_distribution()
             nodes[list_repeated_nodes_bot[i]].degree++;
             new_m++;
         }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     }
 
     printf("Number of duplicated edges : %i\n", duplicated);
@@ -459,7 +482,11 @@ void random_graph_fixed_degree_distribution()
 }
 
 void wc(const char* fname, int type)
+<<<<<<< HEAD
 {
+=======
+{    
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     static const int BUFFER_SIZE = 1024*1024;
     FILE * fd = fopen(fname, "r");
     if(!fd)
@@ -470,17 +497,28 @@ void wc(const char* fname, int type)
     unsigned int index_node_top, index_node_bot, y, id_node;
     unsigned int* pt;
     unsigned int* list_neighbors_top;
+<<<<<<< HEAD
     std::map<unsigned int, std::vector<unsigned int> > list_neighbors_bot;
 
     index_node_top = 0;
 
+=======
+    std::map<unsigned int, std::vector<unsigned int> > list_neighbors_bot;    
+
+    index_node_top = 0;
+    
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     fseek(fd, 0, SEEK_END);
     size_t t = ftell(fd) * sizeof(char);
     rewind(fd);
     unsigned int progression = 0;
 
     while(fgets(line, BUFFER_SIZE, fd))
+<<<<<<< HEAD
     {
+=======
+    {                
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
         progression += strlen(line);
         printf("\rReading percentage %.3f%%", (progression / (1.0 * t)) * 100.0);
         fflush(stdout);
@@ -540,16 +578,28 @@ void wc(const char* fname, int type)
     graph.n_bot = list_neighbors_bot.size();
     index_node_bot = index_node_top;
 
+<<<<<<< HEAD
     //nodes = (NODES*) realloc(nodes, sizeof(NODES) * (graph.n_size));
     //graph.nodes = (unsigned int*) realloc(graph.nodes, sizeof(unsigned int) * (graph.n_size));
     nodes = PyMem_Resize(nodes, NODES, graph.n_size);
     graph.nodes = PyMem_Resize(graph.nodes, unsigned int, graph.n_size);
 
+=======
+    //nodes = (NODES*) realloc(nodes, sizeof(NODES) * (graph.n_size));    
+    //graph.nodes = (unsigned int*) realloc(graph.nodes, sizeof(unsigned int) * (graph.n_size));
+    nodes = PyMem_Resize(nodes, NODES, graph.n_size);
+    graph.nodes = PyMem_Resize(graph.nodes, unsigned int, graph.n_size);
+    
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     size_t size;
     std::map<unsigned int, std::vector<unsigned int> >::iterator it;
     for(it = list_neighbors_bot.begin(); it != list_neighbors_bot.end(); ++it)
     {
+<<<<<<< HEAD
         size = it->second.size();
+=======
+        size = it->second.size();        
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
         id_node = it->first;
 
         //graph.list_neighbors = (unsigned int*) realloc(graph.list_neighbors, sizeof(unsigned int) * (graph.m + size));
@@ -639,7 +689,11 @@ static PyObject* py_load_graph(PyObject* self, PyObject* args)
         size_t size = strlen(path_directory) + strlen("/random_graph") + 2;
         char* save_graph_filename = (char*) malloc(sizeof(char) * size);    
         snprintf(save_graph_filename, size, "%s/random_graph", path_directory);
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
         printf("\t\t[ Saving random bipartite graph... ]\n");
         save_graph(save_graph_filename, type);
         free(save_graph_filename);
@@ -692,21 +746,34 @@ unsigned int load_neighbour_proximity(unsigned int& index_node, unsigned int& li
         else
         {
             for(int j=0; j<nodes[index_neighbor].degree; j++)
+<<<<<<< HEAD
                 set_neighbours.insert(nodes[index_neighbor].p_neighbors[j]);
         }
+=======
+                set_neighbours.insert(nodes[index_neighbor].p_neighbors[j]);                
+        }   
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     }
 
     set_neighbours.erase(graph.nodes[index_node]);
     nodes[index_node].prox.n = set_neighbours.size();
     // Nodes with degree greater than 1 (1-degree depreciated)
     nodes[index_node].degree_gt1 = count_degree_gt1;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     if(set_neighbours.size() >= limit)
     {
         nodes[index_node].prox.n = -1;
         return -1;
     }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     nodes[index_node].prox.neighbors = PyMem_New(unsigned int, set_neighbours.size());
     std::copy(set_neighbours.begin(), set_neighbours.end(), nodes[index_node].prox.neighbors);
 
@@ -714,13 +781,21 @@ unsigned int load_neighbour_proximity(unsigned int& index_node, unsigned int& li
 }
 
 static PyObject* py_load_proximity(PyObject* self, PyObject* args)
+<<<<<<< HEAD
 {
+=======
+{  
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     unsigned int limit;
     PyArg_ParseTuple(args, "i", &limit);
 
     char buf[1024];
     unsigned int nb_large_proximity, mem;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> c2f6d1a565bd9b09fb77e373f69f29f1addf1a31
     nb_2big_proximity = 0;
 
     for(unsigned int i=0; i<graph.n_size; i++)
