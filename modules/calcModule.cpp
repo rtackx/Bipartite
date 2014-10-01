@@ -2,6 +2,7 @@
 #include "modules.h"
 
 /* ** ** ** *** * VARIABLES / METRICS * ** ** ** *** * */
+
 GRAPH graph;
 NODES* nodes = NULL;
 unsigned int n_list_proximity;
