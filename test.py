@@ -1,10 +1,19 @@
-#! /usr/bin/python
+#! python
 
-import numpy as np
-import matplotlib.pyplot as plt
+''' // CREATE PROJECTIONS
 
-x = np.arange(0, 5, 0.05);
-y = np.sin(x)
-print x, y
-plt.plot(x, y, linewidth=2.5, linestyle="-", marker="o", markersize=20, alpha=0.75, color="red", markeredgecolor="none")
-plt.show()
+from modules.calcModule import *
+
+simple_load_graph("Datasets/anime.etiquette", 1)
+save_projection(".")
+'''
+
+import modules.drawing
+
+'''D = modules.drawing.DrawGraph("projection_top")
+D.draw()
+D.to_gexf()'''
+
+D = modules.drawing.DrawBipartite("Datasets/network_protocols.etiquette", 1)
+#D.draw()
+D.to_gexf()

@@ -23,6 +23,7 @@ def main(argv):
 	# VARIABLES
 	datafile = ""
 	datatype = 0
+	# limit for size of neighbors
 	limit = 100000
 	random = 0
 
@@ -56,29 +57,12 @@ def main(argv):
 	graph_directory = "dir_"
 	graph_directory += graph_name
 	if random:
-		graph_directory += "_random"
-	
+		graph_directory += "_random"	
 
-	print "\t\t[ Building data from %s... ]" % datafile
-	load_graph(graph_directory, datafile, datatype, random)	
+	compute_bipartite(graph_directory, datafile, datatype, random, limit)	
 	
-	get_informations()
-	#compute_isolation()
-	
-	print "\t\t[ Computation in progress... ]"
-	print "\t - Computing proximity ..."
-	estimate_memory_consumption()
-	load_proximity(limit)
-	
-	print "\t - Computing metrics ..."
-	treat_compute_metrics()
-	
-	print "\t\t[ Saving data into %s directory... ]" % graph_directory
-	write_metrics()
-
 	date_end = datetime.datetime.now()
 	print "====== Time elapsed : %s ======" % (date_end - date_begin)
 
 if __name__  == "__main__":	
-	main(sys.argv[1:])	
-	unload_graph()
+	main(sys.argv[1:])
