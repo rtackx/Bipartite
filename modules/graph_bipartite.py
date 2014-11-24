@@ -11,7 +11,8 @@ class Bipartite():
 		self.directory = directory
 
 		self.list_top_nodes = []
-		self.list_bot_nodes = []		
+		self.list_bot_nodes = []
+		
 		self.n_top = 0
 		self.n_bot = 0
 		self.n = 0
@@ -25,6 +26,7 @@ class Bipartite():
 		self.monopole_top = {}
 		self.avg_size_community_top = {}
 		self.dispersion_top = {}
+		self.size_neighbourhood_top = {}
 		self.rc_top = {}
 
 		self.list_metrics_top = {}
@@ -39,6 +41,7 @@ class Bipartite():
 		self.monopole_bot = {}
 		self.avg_size_community_bot = {}
 		self.dispersion_bot = {}
+		self.size_neighbourhood_bot = {}
 		self.rc_bot = {}
 
 		self.list_metrics_bot = {}
@@ -67,12 +70,12 @@ class Bipartite():
 		metrics = [self.degree_top, self.degree_bot, self.cc_top, self.cc_bot, 
 				self.cc_min_top, self.cc_min_bot, self.cc_max_top, self.cc_max_bot,
 				self.monopole_top, self.monopole_bot, self.avg_size_community_top, self.avg_size_community_bot,
-				self.dispersion_top, self.dispersion_bot, self.rc_top, self.rc_bot]
+				self.dispersion_top, self.dispersion_bot, self.size_neighbourhood_top, self.size_neighbourhood_bot, self.rc_top, self.rc_bot]
 
 		metrics_files = ["degree_top.data", "degree_bot.data", "cc_top.data", "cc_bot.data", 
 					"cc_min_top.data", "cc_min_bot.data", "cc_max_top.data", "cc_max_bot.data",
 					"monopole_top.data", "monopole_bot.data", "avg_size_community_top.data", "avg_size_community_bot.data",
-					"dispersion_top.data", "dispersion_bot.data", "rc_top.data", "rc_bot.data"]
+					"dispersion_top.data", "dispersion_bot.data", "size_neighborhood_top.data", "size_neighborhood_bot.data", "rc_top.data", "rc_bot.data"]
 
 		i = 0
 		while i < len(metrics):
@@ -186,6 +189,8 @@ class Bipartite():
 		self.list_metrics_top["avg_size_community_top"].compile()
 		self.list_metrics_top["dispersion_top"] = metric.Metric(self, "dispersion_top", self.dispersion_top)
 		self.list_metrics_top["dispersion_top"].compile()
+		self.list_metrics_top["size_neighbourhood_top"] = metric.Metric(self, "size_neighbourhood_top", self.size_neighbourhood_top)
+		self.list_metrics_top["size_neighbourhood_top"].compile()
 		self.list_metrics_top["rc_top"] = metric.Metric(self, "rc_top", self.rc_top)
 		self.list_metrics_top["rc_top"].compile()
 
@@ -204,6 +209,8 @@ class Bipartite():
 		self.list_metrics_bot["avg_size_community_bot"].compile()
 		self.list_metrics_bot["dispersion_bot"] = metric.Metric(self, "dispersion_bot", self.dispersion_bot)
 		self.list_metrics_bot["dispersion_bot"].compile()
+		self.list_metrics_bot["size_neighbourhood_bot"] = metric.Metric(self, "size_neighbourhood_bot", self.size_neighbourhood_bot)
+		self.list_metrics_bot["size_neighbourhood_bot"].compile()
 		self.list_metrics_bot["rc_bot"] = metric.Metric(self, "rc_bot", self.rc_bot)
 		self.list_metrics_bot["rc_bot"].compile()
 
@@ -267,6 +274,12 @@ class Bipartite():
 		del self.list_correlations_top["degree_top-dispersion_top"]
 		print "- Finished correlation 'degree_top-dispersion_top'"
 
+		self.list_correlations_top["degree_top-size_neighbourhood_top"] = metric.Correlation(self, self.list_metrics_top["degree_top"], self.list_metrics_top["size_neighbourhood_top"], "top")
+		self.list_correlations_top["degree_top-size_neighbourhood_top"].compile()
+		self.save_correlation(self.list_correlations_top["degree_top-size_neighbourhood_top"], "top")
+		del self.list_correlations_top["degree_top-size_neighbourhood_top"]
+		print "- Finished correlation 'degree_top-size_neighbourhood_top'"
+
 		#### DEGREE BOT ####
 		self.list_correlations_bot["degree_bot-cc_bot"] = metric.Correlation(self, self.list_metrics_bot["degree_bot"], self.list_metrics_bot["cc_bot"], "bot")
 		self.list_correlations_bot["degree_bot-cc_bot"].compile()
@@ -297,6 +310,12 @@ class Bipartite():
 		self.save_correlation(self.list_correlations_bot["degree_bot-dispersion_bot"], "bot")
 		del self.list_correlations_bot["degree_bot-dispersion_bot"]
 		print "- Finished correlation 'degree_bot-dispersion_bot'"
+
+		self.list_correlations_bot["degree_bot-size_neighbourhood_bot"] = metric.Correlation(self, self.list_metrics_bot["degree_bot"], self.list_metrics_bot["size_neighbourhood_bot"], "bot")
+		self.list_correlations_bot["degree_bot-size_neighbourhood_bot"].compile()
+		self.save_correlation(self.list_correlations_bot["degree_bot-size_neighbourhood_bot"], "bot")
+		del self.list_correlations_bot["degree_bot-size_neighbourhood_bot"]
+		print "- Finished correlation 'degree_bot-size_neighbourhood_bot'"
 
 		#### CC TOP ####
 		self.list_correlations_top["cc_top-rc_top"] = metric.Correlation(self, self.list_metrics_top["cc_top"], self.list_metrics_top["rc_top"], "top")

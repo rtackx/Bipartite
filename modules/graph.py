@@ -1,12 +1,10 @@
-import node, extra
-import copy
-import os
-import progressbar
-import graph_bipartite
+import os, copy
+import modules.node
+import modules.extra
 
 class Graph(object):
-	def __init__(self, name):
-		self.name = name
+	def __init__(self, graphfile):
+		self.graphfile = graphfile
 		self.nodes = {}
 		
 		self.n = 0
@@ -20,9 +18,8 @@ class Graph(object):
 		self.list_metrics = {}
 		self.list_correlations = {}
 
-	def compute(self):
-		self._compute_degree_informations()		
-		self.density = (2 * self.m) / float(self.n * (self.n - 1))
+	def compute_metrics(self):
+		self.__compute_degree_informations()				
 		self.__compute_cc_informations()
 		self.__compute_rc_informations()
 
@@ -38,29 +35,22 @@ class Graph(object):
 		self.list_metrics["rc"].compile()
 
 	def treat_correlations(self):
-		#COMPUTE TOP POSSIBLE CORRELATIONS
 		for metric1 in self.list_metrics:
 			for metric2 in self.list_metrics:
-				if metric1 != metric2:					
+				if metric1 != metric2:			
 					name_correlation = "%s-%s" % (metric1, metric2)
 					self.list_correlations[name_correlation] = metric.Correlation(self, self.list_metrics[metric1], self.list_metrics[metric2])
 					self.list_correlations[name_correlation].compile()
-
-					# MIRRORING
-					name_correlation = "%s-%s" % (metric2, metric1)
-					self.list_correlations[name_correlation] = metric.Correlation(self, self.list_metrics[metric2], self.list_metrics[metric1])
-					self.list_correlations[name_correlation].compile()
 		
-	def _compute_degree_informations(self):
-		self.n = len(self.nodes)
-		
+	def __compute_degree_informations(self):
 		for id_node in self.nodes:
 			degree = self.nodes[id_node].degree
 			self.list_local_degree[id_node] = degree
 			self.m += degree
 
 		self.m /= 2
-		#self.average_degree = (2 * self.m) / float(self.n)
+		self.average_degree = (2 * self.m) / float(self.n)
+		self.density = (2 * self.m) / float(self.n * (self.n - 1))
 	
 	def __compute_cc_informations(self):
 		for id_node in self.nodes:
@@ -110,20 +100,21 @@ class Graph(object):
 			if k != 0 and v != 0:
 				self.list_local_rc[id_node] = (2*v) / float(k)
 	
-	def load(self, filename, type):
-		file = open(filename, 'r')
+	def load(self):
+		file = open(self.graphfile, 'r')
 
 		# A AMERLIORER
 		for line in file.read().splitlines():
 			nodes_id = line.split()
 
 			if nodes_id[0] not in self.nodes:
-				self.nodes[nodes_id[0]] = node.Node(nodes_id[0])
+				self.nodes[nodes_id[0]] = modules.node.Node(nodes_id[0])
 
 			for i in range(1, len(nodes_id)):			
 				self.nodes[nodes_id[0]].add_neighbour(nodes_id[i])
 
 		file.close()
+		self.n = len(self.nodes)
 	
 	def informations(self):
 		info = "\t\t#### [Statistics of graph (%s)] ####\n\n" % self.name

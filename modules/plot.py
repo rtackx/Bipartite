@@ -44,7 +44,7 @@ class Plot:
 		font = {'family' : 'sans-serif',
 				'style'  : 'normal',
         		'weight' : 'bold',
-        		'size'   : 26}
+        		'size'   : 15}
 		matplotlib.rc('font', **font)
 		###############################
 
@@ -80,7 +80,7 @@ class Plot:
 			i += 1
 		
 		if self.legend:
-			pylab.legend(self.legend, loc="best", prop={"size":31})
+			pylab.legend(self.legend, loc="best", prop={"size":13})
 
 		self.figure.savefig(self.plot_file)
 		pylab.clf()
